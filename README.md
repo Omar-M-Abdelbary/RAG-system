@@ -1,14 +1,18 @@
-RAG System with FAISS for Vector Search
-This project implements a Retrieval-Augmented Generation (RAG) system using FAISS as a vector database for efficient similarity search. The system retrieves relevant text chunks based on user queries and integrates them into a language model response.
-
-Features
-Vector Database: Uses FAISS (Facebook AI Similarity Search) for efficient nearest neighbor search.
-
-Embeddings: Utilizes Ollama to generate embeddings from text.
-
+RAG with FAISS
+This project uses FAISS as a vector database to store and retrieve text embeddings. It takes user queries, finds the most relevant text from a dataset, and returns the results.
 
 Technologies Used
-FAISS (Facebook AI Similarity Search) – Vector database
+FAISS – Vector database for similarity search
 
-Ollama – Embedding and language model
+Ollama – Embedding model
 
+NumPy – For numerical operations
+
+How It Works
+Loads a text dataset and converts it into embeddings.
+
+Stores the embeddings in FAISS.
+
+Takes a user query and converts it into an embedding.
+
+Searches FAISS for similar results and returns the top matches.
