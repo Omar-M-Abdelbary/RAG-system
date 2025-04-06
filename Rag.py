@@ -48,9 +48,3 @@ def retrieve(query, top_n=3):
 
 
 
-# query = input("Enter your query: ")
-# results = retrieve(query, top_n=3)
-
-# print("\nTop retrieved results:")
-# for res in results:
-#     print(res)
