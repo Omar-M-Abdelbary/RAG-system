@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter, status, Request
+from fastapi import FastAPI, APIRouter, status, Request, HTTPException
 from fastapi.responses import JSONResponse
 from routes.schemes.nlp import PushRequest, SearchRequest
 from models.ProjectModel import ProjectModel
@@ -6,6 +6,10 @@ from models.ChunkModel import ChunkModel
 from controllers import NLPController
 from models import ResponseSignal
 from tqdm.auto import tqdm
+from datasets import Dataset
+from ragas.evaluation import evaluate
+from ragas.evaluation import evaluate
+from ragas.metrics import faithfulness, answer_relevancy, context_precision
 
 import logging
 
@@ -204,3 +208,5 @@ async def answer_rag(request: Request, project_id: int, search_request: SearchRe
             "chat_history": chat_history
         }
     )
+    
+    

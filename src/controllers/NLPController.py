@@ -106,8 +106,8 @@ class NLPController(BaseController):
         if not retrieved_documents or len(retrieved_documents) == 0:
             return answer, full_prompt, chat_history
         
-        # step2: Construct LLM prompt
-        system_prompt = self.template_parser.get("rag", "system_prompt")
+        # step2: Construct LLM prompt with English-only instruction
+        system_prompt = "You are a helpful assistant that answers questions about cats. Always respond in English, even if the provided context is in another language. If you need to translate information, do so accurately and maintain the original meaning. Never respond in any language other than English."
 
         documents_prompts = "\n".join([
             self.template_parser.get("rag", "document_prompt", {
@@ -117,9 +117,7 @@ class NLPController(BaseController):
             for idx, doc in enumerate(retrieved_documents)
         ])
 
-        footer_prompt = self.template_parser.get("rag", "footer_prompt", {
-            "query": query
-        })
+        footer_prompt = f"Question: {query}\n\nPlease provide a clear, accurate answer in English based on the provided context. If the context is in another language, translate it to English while maintaining accuracy."
 
         # step3: Construct Generation Client Prompts
         chat_history = [
@@ -129,12 +127,24 @@ class NLPController(BaseController):
             )
         ]
 
-        full_prompt = "\n\n".join([ documents_prompts,  footer_prompt])
+        full_prompt = "\n\n".join([documents_prompts, footer_prompt])
 
         # step4: Retrieve the Answer
         answer = self.generation_client.generate_text(
             prompt=full_prompt,
             chat_history=chat_history
         )
+
+        # Ensure the answer is in English
+        if answer:
+            # Check for common non-English indicators
+            non_english_indicators = ["los ", "las ", "el ", "la ", "es ", "son ", "para ", "con ", "que "]
+            if any(indicator in answer.lower() for indicator in non_english_indicators):
+                # If we detect non-English content, try to get an English answer
+                english_prompt = f"Please translate this to English while maintaining accuracy: {answer}"
+                answer = self.generation_client.generate_text(
+                    prompt=english_prompt,
+                    chat_history=chat_history
+                )
 
         return answer, full_prompt, chat_history
