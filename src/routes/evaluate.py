@@ -27,9 +27,9 @@ evaluate_router = APIRouter(
 logger = logging.getLogger('uvicorn.error')
 
 # Email configuration
-EMAIL_ADDRESS = "omarbary2000@gmail.com"
-EMAIL_PASSWORD = "yxge atbr gzrp khah"
-SMTP_SERVER = "smtp.gmail.com"
+EMAIL_ADDRESS = 
+EMAIL_PASSWORD = 
+SMTP_SERVER = 
 SMTP_PORT = 587
 
 # Branch information
